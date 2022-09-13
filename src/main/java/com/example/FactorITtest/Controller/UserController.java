@@ -1,13 +1,12 @@
 package com.example.FactorITtest.Controller;
 
-import com.example.FactorITtest.Entities.UserEntity;
+import com.example.FactorITtest.DTO.Request.UserRequest;
 import com.example.FactorITtest.Exceptions.UserException;
 import com.example.FactorITtest.Exceptions.Utils.WebUtils;
 import com.example.FactorITtest.Service.Interface.UserService;
-import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,11 +27,11 @@ public class UserController {
     UserService userService;
     
     @PostMapping("/save")
-    public ResponseEntity createNewUser(@RequestBody UserEntity userEntity) throws UserException{
+    public ResponseEntity saveUser(@RequestBody UserRequest userRequest) throws UserException{
         try {
-            return ResponseEntity.ok(userService.saveUser(userEntity));
+            return ResponseEntity.ok(userService.saveUser(userRequest));
         } catch (Exception e) {
-            return (ResponseEntity) ResponseEntity.badRequest();
+            return (WebUtils.generateResponseEntityFromException("ERROR-01", e));
         }
     }
     
@@ -41,7 +40,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getAllUsers());
         } catch (Exception e) {
-            return (ResponseEntity) ResponseEntity.badRequest();
+            return (WebUtils.generateResponseEntityFromException("ERROR-02", e));
         }
     }
     
@@ -50,7 +49,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getUserById(id).get());
         } catch (Exception e) {
-            return WebUtils.generateResponseEntityFromException("ERROR-01", e);
+            return WebUtils.generateResponseEntityFromException("ERROR-03", e);
         }
     }
     
@@ -60,11 +59,11 @@ public class UserController {
             if(userService.deleteUserById(id)) {
                return ResponseEntity.ok("El usuario se eliminó correctamente");
             } else {
-               return WebUtils.generateResponseEntityFromException("ERROR-02", 
+               return WebUtils.generateResponseEntityFromException("ERROR-04", 
                        new UserException("No se pudo eliminar el usuario")); 
             }
         } catch (Exception e) {
-          return WebUtils.generateResponseEntityFromException("ERROR-03", e);
+          return WebUtils.generateResponseEntityFromException("ERROR-05", e);
         }
     }
 }
