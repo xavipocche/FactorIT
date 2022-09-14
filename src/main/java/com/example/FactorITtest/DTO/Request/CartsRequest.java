@@ -1,6 +1,5 @@
 package com.example.FactorITtest.DTO.Request;
 
-import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,9 +9,6 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UserRequest {
-    String name;
-    String lastname;
-    String email;
-    BigDecimal balance;
+public class CartsRequest {
+
 }

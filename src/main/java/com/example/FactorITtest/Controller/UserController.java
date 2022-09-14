@@ -4,7 +4,7 @@ import com.example.FactorITtest.DTO.Request.UserRequest;
 import com.example.FactorITtest.Exceptions.UserException;
 import com.example.FactorITtest.Exceptions.Utils.WebUtils;
 import com.example.FactorITtest.Service.Interface.UserService;
-import javax.validation.Valid;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -65,5 +66,15 @@ public class UserController {
         } catch (Exception e) {
           return WebUtils.generateResponseEntityFromException("ERROR-05", e);
         }
+    }
+    
+    @PostMapping("/addBalance/{id}")
+    public ResponseEntity addBalance(@PathVariable("id") Long userId, 
+            @RequestParam BigDecimal balance) {
+        try {
+             return ResponseEntity.ok(userService.addBalance(userId, balance));
+        } catch (Exception e) {
+            return WebUtils.generateResponseEntityFromException("ERROR-07", e);
+        }    
     }
 }

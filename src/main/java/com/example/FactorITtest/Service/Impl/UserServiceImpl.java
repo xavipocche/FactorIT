@@ -1,6 +1,8 @@
 package com.example.FactorITtest.Service.Impl;
 
+import com.example.FactorITtest.Constants.IConstants;
 import com.example.FactorITtest.DTO.Request.UserRequest;
+import com.example.FactorITtest.DTO.Response.AddBalanceResponse;
 import com.example.FactorITtest.DTO.Response.UsersResponse;
 import com.example.FactorITtest.Entities.UserEntity;
 import com.example.FactorITtest.Exceptions.UserException;
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 .name(userRequest.getName())
                 .lastname(userRequest.getLastname())
                 .email(userRequest.getEmail())
-                .balance(userRequest.getBalance())
+                .balance(userRequest.getBalance().abs())
                 .build();
                 
         return userRepository.save(userEntity);
@@ -78,13 +80,21 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
-    public Boolean addBalance(Long idUser, BigDecimal balance) throws UserException {
+    public AddBalanceResponse addBalance(Long idUser, BigDecimal balance) throws UserException {
         Optional<UserEntity> userOptional = getUserById(idUser);
         
         if(userOptional.isPresent()) {
             UserEntity userEntity = userOptional.get();
             userEntity.setBalance(userEntity.getBalance().add(balance));
-            return true;
+            userRepository.save(userEntity);
+            
+            AddBalanceResponse addBalanceResponse = 
+                    AddBalanceResponse.builder()
+                    .user(userEntity)
+                    .message(IConstants.SUCCESS_MESSAGE_ADD_BALANCE)
+                    .build();
+            
+            return addBalanceResponse;
         } else {
             throw new UserException("No se encontró el usuario solicitado para agregarle saldo");
         }
