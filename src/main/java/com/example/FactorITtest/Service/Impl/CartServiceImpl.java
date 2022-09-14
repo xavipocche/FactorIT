@@ -1,5 +1,6 @@
 package com.example.FactorITtest.Service.Impl;
 
+import com.example.FactorITtest.DTO.Response.CartStatusResponse;
 import com.example.FactorITtest.DTO.Response.CartsResponse;
 import com.example.FactorITtest.Entities.CartEntity;
 import com.example.FactorITtest.Entities.ProductEntity;
@@ -8,6 +9,7 @@ import com.example.FactorITtest.Exceptions.UserException;
 import com.example.FactorITtest.Repository.CartRepository;
 import com.example.FactorITtest.Service.Interface.CartService;
 import com.example.FactorITtest.Service.Interface.UserService;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +67,31 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Boolean deleteCartById(Long id) throws CartException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Optional<CartEntity> cartOptional = cartRepository.findById(id);
+        
+        if(cartOptional.isPresent()) {
+            cartRepository.delete(cartOptional.get());
+            return true;
+        } else {
+            throw new CartException("No se encontró el carrito solicitado para su eliminación");
+        }
     }
 
+    @Override
+    public CartStatusResponse getCartStatus(Long id) throws CartException {
+        Optional<CartEntity> cartOptional = cartRepository.findById(id);
+  
+        if(cartOptional.isPresent()) {
+            
+            CartStatusResponse cartStatusResponse = 
+                    CartStatusResponse.builder()
+                        .cartEntity(cartOptional.get())
+                        .totalToPay(BigDecimal.ZERO) //Crear método que sume los precios de los productos que tiene asignados
+                        .build();
+            
+            return cartStatusResponse;
+        } else {
+            throw new CartException("No se encontró el carrito solicitado para su eliminación");
+        }        
+    }
 }

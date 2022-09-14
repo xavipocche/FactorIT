@@ -1,5 +1,6 @@
 package com.example.FactorITtest.Service.Interface;
 
+import com.example.FactorITtest.DTO.Response.CartStatusResponse;
 import com.example.FactorITtest.DTO.Response.CartsResponse;
 import com.example.FactorITtest.Entities.CartEntity;
 import com.example.FactorITtest.Exceptions.CartException;
@@ -19,4 +20,6 @@ public interface CartService {
     CartEntity saveCart(Long userId) throws CartException, UserException;
     
     Boolean deleteCartById(Long id) throws CartException;
+    
+    CartStatusResponse getCartStatus(Long id) throws CartException;
 }
