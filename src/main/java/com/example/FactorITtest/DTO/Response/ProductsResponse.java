@@ -1,6 +1,6 @@
 package com.example.FactorITtest.DTO.Response;
 
-import com.example.FactorITtest.Entities.UserEntity;
+import com.example.FactorITtest.Entities.ProductEntity;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UsersResponse {
-    List<UserEntity> listUsers;
-    Long totalUsers;
+public class ProductsResponse {
+    List<ProductEntity> listProducts;
+    Long totalProducts;
 }

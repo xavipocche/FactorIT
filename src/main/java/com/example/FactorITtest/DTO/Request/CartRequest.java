@@ -9,6 +9,6 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class CartsRequest {
-
+public class CartRequest {
+    Long userId;
 }

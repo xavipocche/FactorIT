@@ -28,11 +28,11 @@ public class UserController {
     UserService userService;
     
     @PostMapping("/save")
-    public ResponseEntity saveUser(@RequestBody UserRequest userRequest) throws UserException{
+    public ResponseEntity saveUser(@RequestBody UserRequest userRequest) {
         try {
             return ResponseEntity.ok(userService.saveUser(userRequest));
         } catch (Exception e) {
-            return (WebUtils.generateResponseEntityFromException("ERROR-01", e));
+            return WebUtils.generateResponseEntityFromException("ERROR-USER-01", e);
         }
     }
     
@@ -41,7 +41,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getAllUsers());
         } catch (Exception e) {
-            return (WebUtils.generateResponseEntityFromException("ERROR-02", e));
+            return WebUtils.generateResponseEntityFromException("ERROR-USER-02", e);
         }
     }
     
@@ -50,7 +50,7 @@ public class UserController {
         try {
             return ResponseEntity.ok(userService.getUserById(id).get());
         } catch (Exception e) {
-            return WebUtils.generateResponseEntityFromException("ERROR-03", e);
+            return WebUtils.generateResponseEntityFromException("ERROR-USER-03", e);
         }
     }
     
@@ -60,11 +60,11 @@ public class UserController {
             if(userService.deleteUserById(id)) {
                return ResponseEntity.ok("El usuario se eliminó correctamente");
             } else {
-               return WebUtils.generateResponseEntityFromException("ERROR-04", 
+               return WebUtils.generateResponseEntityFromException("ERROR-USER-04", 
                        new UserException("No se pudo eliminar el usuario")); 
             }
         } catch (Exception e) {
-          return WebUtils.generateResponseEntityFromException("ERROR-05", e);
+          return WebUtils.generateResponseEntityFromException("ERROR-USER-05", e);
         }
     }
     
@@ -74,7 +74,7 @@ public class UserController {
         try {
              return ResponseEntity.ok(userService.addBalance(userId, balance));
         } catch (Exception e) {
-            return WebUtils.generateResponseEntityFromException("ERROR-07", e);
+            return WebUtils.generateResponseEntityFromException("ERROR-USER-06", e);
         }    
     }
 }

@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -33,9 +32,6 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)   
     @Column(name = "id")
     private Long id;
-    
-    @Column(name = "type")
-    private String type;
     
     @OneToOne
     private UserEntity user;

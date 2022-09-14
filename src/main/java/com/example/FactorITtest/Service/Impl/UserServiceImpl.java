@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
                 .lastname(userRequest.getLastname())
                 .email(userRequest.getEmail())
                 .balance(userRequest.getBalance().abs())
+                .vip(Boolean.FALSE)
                 .build();
                 
         return userRepository.save(userEntity);
