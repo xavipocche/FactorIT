@@ -1,6 +1,5 @@
 package com.example.FactorITtest.Service.Interface;
 
-import com.example.FactorITtest.DTO.Request.CartRequest;
 import com.example.FactorITtest.DTO.Response.CartsResponse;
 import com.example.FactorITtest.Entities.CartEntity;
 import com.example.FactorITtest.Exceptions.CartException;
