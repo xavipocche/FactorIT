@@ -95,7 +95,7 @@ public class CartServiceImpl implements CartService {
             
             return cartStatusResponse;
         } else {
-            throw new CartException("No se encontró el carrito solicitado para su eliminación");
+            throw new CartException("No se encontró el carrito solicitado calcular su total a pagar");
         }        
     }
 
