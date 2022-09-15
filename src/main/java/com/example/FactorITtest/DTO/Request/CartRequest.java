@@ -11,4 +11,5 @@ import lombok.Data;
 @Builder
 public class CartRequest {
     Long userId;
+    String type;
 }

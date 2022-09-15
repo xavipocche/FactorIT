@@ -1,5 +1,6 @@
 package com.example.FactorITtest.Controller;
 
+import com.example.FactorITtest.DTO.Request.CartRequest;
 import com.example.FactorITtest.Exceptions.CartException;
 import com.example.FactorITtest.Exceptions.Utils.WebUtils;
 import com.example.FactorITtest.Service.Interface.CartService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +27,9 @@ public class CartController {
     CartService cartService;
     
     @PostMapping("/save")
-    public ResponseEntity saveCart(@RequestParam Long idUser) {
+    public ResponseEntity saveCart(@RequestBody CartRequest cartRequest) {
         try {
-            return ResponseEntity.ok(cartService.saveCart(idUser));
+            return ResponseEntity.ok(cartService.saveCart(cartRequest));
         } catch (Exception e) {
             return WebUtils.generateResponseEntityFromException("ERROR-CART-01", e);
         }
@@ -91,6 +93,15 @@ public class CartController {
             return ResponseEntity.ok(cartService.getCartStatus(id));
         } catch (Exception e) {
             return WebUtils.generateResponseEntityFromException("ERROR-CART-08", e);
+        }
+    }
+    
+    @PostMapping("/pay/{id}")
+    public ResponseEntity payCart(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(cartService.payCart(id));
+        } catch (Exception e) {
+            return WebUtils.generateResponseEntityFromException("ERROR-CART-09", e);
         }
     }
 }

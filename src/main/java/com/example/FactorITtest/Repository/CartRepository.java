@@ -20,4 +20,9 @@ public interface CartRepository extends CrudRepository<CartEntity, Long> {
     @Query(value = "SELECT SUM(p.price) FROM cart_product cp INNER JOIN product p "
         + "ON cp.product_id = p.id WHERE cp.cart_entity_id = :id", nativeQuery = true)
     BigDecimal sumProductPrice(@Param("id") Long id);
+    
+    @Query(value = "SELECT MIN(p.price) FROM cart c "
+        + "INNER JOIN cart_product cp ON c.id = cp.cart_entity_id "
+        + "INNER JOIN product p ON p.id = cp.product_id WHERE c.user_id = :userId", nativeQuery = true)
+    BigDecimal getMinPriceFromCart(@Param("userId") Long userId);
 }

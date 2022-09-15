@@ -1,13 +1,12 @@
 package com.example.FactorITtest.Entities;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,20 +24,29 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "cart")
-public class CartEntity {
+@Table(name = "sales")
+public class CheckoutEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)   
     @Column(name = "id")
     private Long id;
     
-    @OneToOne
-    private UserEntity user;
+    @Column(name = "detail", columnDefinition = "longtext")
+    private String detail;
     
-    @OneToMany
-    private List<ProductEntity> product;
+    @Column(name = "total")
+    private BigDecimal total;
     
-    @Column(name = "type")
-    private String type;
+    @Column(name = "customerFullname")
+    private String customerFullname;
+    
+    @Column(name = "customerId")
+    private Long customerId;
+    
+    @Column(name = "status")
+    private String status;
+    
+    @Column(name = "saleDate")
+    private LocalDateTime saleDate;
 }

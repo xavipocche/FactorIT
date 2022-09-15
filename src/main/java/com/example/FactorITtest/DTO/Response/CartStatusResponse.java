@@ -13,5 +13,6 @@ import lombok.Data;
 @Builder
 public class CartStatusResponse {
     CartEntity cartEntity;
+    Integer totalProducts;
     BigDecimal totalToPay;
 }
