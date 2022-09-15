@@ -65,12 +65,32 @@ public class CartController {
         }
     }
     
+    @PostMapping("/addProduct/{id}")
+    public ResponseEntity addProduct(@PathVariable("id") Long cartId,
+            @RequestParam Long productId) {
+        try {
+            return ResponseEntity.ok(cartService.addProduct(cartId, productId));
+        } catch (Exception e) {
+            return WebUtils.generateResponseEntityFromException("ERROR-CART-06", e);
+        }
+    }
+    
+    @PostMapping("/deleteProduct/{id}")
+    public ResponseEntity deleteProduct(@PathVariable("id") Long cartId,
+            @RequestParam Long productId) {
+        try {
+            return ResponseEntity.ok(cartService.deleteProduct(cartId, productId));
+        } catch (Exception e) {
+            return WebUtils.generateResponseEntityFromException("ERROR-CART-07", e);
+        }
+    }
+    
     @GetMapping("/getStatusCart/{id}")
     public ResponseEntity getStatusCart(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.ok(cartService.getCartStatus(id));
         } catch (Exception e) {
-            return WebUtils.generateResponseEntityFromException("ERROR-CART-06", e);
+            return WebUtils.generateResponseEntityFromException("ERROR-CART-08", e);
         }
     }
 }

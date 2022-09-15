@@ -22,4 +22,8 @@ public interface CartService {
     Boolean deleteCartById(Long id) throws CartException;
     
     CartStatusResponse getCartStatus(Long id) throws CartException;
+    
+    CartEntity addProduct(Long cartId, Long productId) throws CartException;
+    
+    CartEntity deleteProduct(Long cartId, Long productId) throws CartException;
 }

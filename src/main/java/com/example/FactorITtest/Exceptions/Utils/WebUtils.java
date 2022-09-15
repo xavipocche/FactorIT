@@ -1,7 +1,5 @@
 package com.example.FactorITtest.Exceptions.Utils;
 
-import com.example.FactorITtest.Exceptions.CartException;
-import com.example.FactorITtest.Exceptions.UserException;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -11,9 +9,15 @@ import org.springframework.http.ResponseEntity;
 public class WebUtils {
     
     public static ResponseEntity generateResponseEntityFromException(String code, Exception e) {
+        String error = null;
+        if(e.getMessage().equals(ErrorTypesConstants.PRODUCT_ADDED_ERROR)) {
+            error = "El producto ya se encuentra agregado en otro carrito";
+        } else if(e.getMessage().equals(ErrorTypesConstants.DELETE_PRODUCT_ADDED_ERROR)) {
+            error = "No puede eliminar un producto que está asignado en un carrito";
+        }
         return ResponseEntity.unprocessableEntity().headers(headers -> {
                 headers.add("ERROR_CODE", code);
                 headers.add("ERROR_MESSAGE", e.getMessage());
-            }).body(null);
+            }).body(error);
     }    
 }

@@ -7,6 +7,7 @@ import com.example.FactorITtest.Entities.ProductEntity;
 import com.example.FactorITtest.Exceptions.CartException;
 import com.example.FactorITtest.Exceptions.UserException;
 import com.example.FactorITtest.Repository.CartRepository;
+import com.example.FactorITtest.Repository.ProductRepository;
 import com.example.FactorITtest.Service.Interface.CartService;
 import com.example.FactorITtest.Service.Interface.UserService;
 import java.math.BigDecimal;
@@ -27,6 +28,8 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public CartsResponse getAllCarts() {
@@ -67,7 +70,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Boolean deleteCartById(Long id) throws CartException {
-        Optional<CartEntity> cartOptional = cartRepository.findById(id);
+        Optional<CartEntity> cartOptional = getCartById(id);
         
         if(cartOptional.isPresent()) {
             cartRepository.delete(cartOptional.get());
@@ -80,18 +83,51 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartStatusResponse getCartStatus(Long id) throws CartException {
         Optional<CartEntity> cartOptional = cartRepository.findById(id);
+        BigDecimal totalToPay = cartRepository.sumProductPrice(id);
   
         if(cartOptional.isPresent()) {
             
             CartStatusResponse cartStatusResponse = 
                     CartStatusResponse.builder()
                         .cartEntity(cartOptional.get())
-                        .totalToPay(BigDecimal.ZERO) //Crear método que sume los precios de los productos que tiene asignados
+                        .totalToPay(totalToPay)
                         .build();
             
             return cartStatusResponse;
         } else {
             throw new CartException("No se encontró el carrito solicitado para su eliminación");
+        }        
+    }
+
+    @Override
+    public CartEntity addProduct(Long cartId, Long productId) throws CartException {
+        Optional<CartEntity> cartOptional = getCartById(cartId);
+        Optional<ProductEntity> productOptional = productRepository.findById(productId);
+        
+        if(productOptional.isPresent()) {
+            cartOptional.get().getProduct().add(productOptional.get());
+            return cartRepository.save(cartOptional.get());
+        } else {
+            throw new CartException("No se encontró el producto para añadirlo en el carrito");
+        }
+    }
+    
+    @Override
+    public CartEntity deleteProduct(Long cartId, Long productId) throws CartException {
+        Optional<CartEntity> cartOptional = getCartById(cartId);
+        Optional<ProductEntity> productOptional = productRepository.findById(productId);
+        
+        if(productOptional.isPresent()) {
+            if(cartOptional.get().getProduct().contains(productOptional.get())) {
+                
+                cartOptional.get().getProduct().remove(productOptional.get());
+                return cartRepository.save(cartOptional.get());
+                
+            } else {
+                throw new CartException("El carrito no contiene el producto solicitado para eliminar");
+            }
+        } else {
+            throw new CartException("No se encontró el producto para eliminarlo en el carrito");
         }        
     }
 }
