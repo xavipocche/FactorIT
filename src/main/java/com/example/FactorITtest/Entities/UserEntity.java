@@ -40,7 +40,4 @@ public class UserEntity {
     
     @Column(name = "balance")
     private BigDecimal balance;
-    
-    @Column(name = "vip")
-    private Boolean vip;
 }

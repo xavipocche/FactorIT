@@ -78,7 +78,7 @@ public class CartServiceImpl implements CartService {
             cartRequest.setType(IConstants.COMUN);
         } else if(cartRequest.getType().equals("1")) {
             cartRequest.setType(IConstants.PROMOCIONAL_POR_FECHA_ESPECIAL);
-        } else if(cartRequest.getType().equals("2") || userEntity.getVip()) {
+        } else if(cartRequest.getType().equals("2")) {
             cartRequest.setType(IConstants.VIP);
         }
         
@@ -166,16 +166,20 @@ public class CartServiceImpl implements CartService {
         
         CartStatusResponse cartStatus = getCartStatus(cartId);
         
-        String discount = validateDiscount(cartStatus);
+        validateUserVip(cartStatus);
+        
+        String discount = validateDiscount(cartStatus) + "| Se vació el carrito, pero no fue eliminado";
         
         if(cart.getUser().getBalance().compareTo(cartStatus.getTotalToPay()) != -1) {
             
             userService.addBalance(cart.getUser().getId(), cartStatus.getTotalToPay().negate());
             
+            List<ProductEntity> listProducts = new ArrayList();
+            listProducts.addAll(cartStatus.getCartEntity().getProduct());
             CheckoutResponse checkoutResponse =
                     CheckoutResponse.builder()
                         .user(cart.getUser())
-                        .detail(cart.getProduct())
+                        .detail(listProducts)
                         .total(cartStatus.getTotalToPay())
                         .status(IConstants.SUCCESS_SALE)
                         .discount(discount)
@@ -191,6 +195,9 @@ public class CartServiceImpl implements CartService {
                         .saleDate(LocalDateTime.now())
                         .build();
             checkoutRepository.save(checkoutEntity);
+            
+            cartStatus.getCartEntity().getProduct().removeAll(cartStatus.getCartEntity().getProduct());
+            cartRepository.save(cartStatus.getCartEntity());
             
             return checkoutResponse;
         } else {
@@ -209,6 +216,17 @@ public class CartServiceImpl implements CartService {
             
             throw new CartException("El usuario no tiene saldo suficiente para pagar el carrito. El carrito fue eliminado");
         }
+    }
+    
+    private void validateUserVip(CartStatusResponse cartStatusResponse) throws UserException {
+        System.out.println("TOTAL GASTADO EN EL MES: " + userService.getTotalSpendInActualMonth(cartStatusResponse.getCartEntity().getUser().getId()));
+        if(!cartStatusResponse.getCartEntity().getType().equalsIgnoreCase(IConstants.PROMOCIONAL_POR_FECHA_ESPECIAL)) {
+            if(userService.getTotalSpendInActualMonth(cartStatusResponse.getCartEntity().getUser().getId()).compareTo(new BigDecimal("10000")) != -1) {
+                cartStatusResponse.getCartEntity().setType(IConstants.VIP);
+            }else {
+                cartStatusResponse.getCartEntity().setType(IConstants.COMUN);
+            }            
+        } 
     }
     
     private String validateDiscount(CartStatusResponse cartStatusResponse) {
@@ -230,20 +248,20 @@ public class CartServiceImpl implements CartService {
                        " PRECIO INICIAL: " + previousPrice +
                        " PRECIO FINAL: " + cartStatusResponse.getTotalToPay();
                 
-            } else if(cartStatusResponse.getCartEntity().getType().equalsIgnoreCase(IConstants.PROMOCIONAL_POR_FECHA_ESPECIAL)) {
+            }else if(cartStatusResponse.getCartEntity().getType().equalsIgnoreCase(IConstants.PROMOCIONAL_POR_FECHA_ESPECIAL)) {
                 cartStatusResponse.setTotalToPay(cartStatusResponse.getTotalToPay().subtract(new BigDecimal(300)));
                 
                 discountApliedMessage = "Se aplicó un descuento de 300 por comprar más de 10 productos y ser carro: " + IConstants.PROMOCIONAL_POR_FECHA_ESPECIAL +
                        " PRECIO INICIAL: " + previousPrice +
                        " PRECIO FINAL: " + cartStatusResponse.getTotalToPay();                
             
-            } else if(cartStatusResponse.getCartEntity().getType().equalsIgnoreCase(IConstants.VIP)) {
+            }else if(cartStatusResponse.getCartEntity().getType().equalsIgnoreCase(IConstants.VIP)) {
                 BigDecimal discountTotal = 
                         cartRepository.getMinPriceFromCart(cartStatusResponse.getCartEntity().getUser().getId()).add(new BigDecimal(500));
                 
                 cartStatusResponse.setTotalToPay(cartStatusResponse.getTotalToPay().subtract(discountTotal));
                 
-                discountApliedMessage = "Se aplicó un descuento de 500 por comprar más de 10 productos y ser carro: " + IConstants.VIP + " además se bonificó el producto más barato" +
+                discountApliedMessage = "Se aplicó un descuento de 500 por comprar más de 10 productos y ser " + IConstants.VIP + " además se bonificó el producto más barato" +
                        " PRECIO INICIAL: " + previousPrice +
                        " PRECIO FINAL: " + cartStatusResponse.getTotalToPay();   
             }   

@@ -6,6 +6,7 @@ import com.example.FactorITtest.DTO.Response.UsersResponse;
 import com.example.FactorITtest.Entities.UserEntity;
 import com.example.FactorITtest.Exceptions.UserException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,5 +23,9 @@ public interface UserService {
     
     Boolean deleteUserById(Long id) throws UserException;
     
-    AddBalanceResponse addBalance(Long idUser, BigDecimal balance) throws UserException; 
+    AddBalanceResponse addBalance(Long idUser, BigDecimal balance) throws UserException;
+    
+    BigDecimal getTotalSpendInActualMonth(Long idUser) throws UserException;
+    
+    List<UserEntity> getVipUsers();
 }

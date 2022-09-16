@@ -163,7 +163,7 @@ public class CartController {
         @ApiResponse(responseCode = "200", description = "Cart paid successfully and register the sale y the table sales", 
             content = { @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = CheckoutResponse.class)) }),
-        @ApiResponse(responseCode = "422", description = "Cart not found, User doesn´t have enough balance to pay the cart", 
+        @ApiResponse(responseCode = "422", description = "Cart not found, User doesn´t have enough balance to pay the cart, Cart doesn´t have any product", 
             content = @Content)
     })     
     @PostMapping("/pay/{id}")

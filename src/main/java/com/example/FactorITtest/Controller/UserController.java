@@ -122,4 +122,20 @@ public class UserController {
             return WebUtils.generateResponseEntityFromException("ERROR-USER-06", e);
         }    
     }
+    
+
+    @Operation(summary = "Gets all vip users")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "A vip users are users who were spent 10000 or more in the current month", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = UserEntity.class)) })
+    })       
+    @GetMapping("/getVipUsers")
+    public ResponseEntity getVipUsers() {
+        try {
+            return ResponseEntity.ok(userService.getVipUsers());
+        } catch (Exception e) {
+            return WebUtils.generateResponseEntityFromException("ERROR-USER-07", e);
+        }
+    }
 }

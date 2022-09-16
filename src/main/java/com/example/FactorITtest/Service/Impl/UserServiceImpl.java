@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
                 .lastname(userRequest.getLastname())
                 .email(userRequest.getEmail())
                 .balance(userRequest.getBalance().abs())
-                .vip(Boolean.FALSE)
                 .build();
                 
         return userRepository.save(userEntity);
@@ -108,5 +107,15 @@ public class UserServiceImpl implements UserService {
         if(userRequest.getLastname().trim().isEmpty()) {
             throw new UserException("El apellido no puede ser nulo");
         }
+    }
+
+    @Override
+    public BigDecimal getTotalSpendInActualMonth(Long id) {
+        return userRepository.getTotalSpendInActualMonth(id);
+    }
+    
+    @Override
+    public List<UserEntity> getVipUsers() {
+        return userRepository.getVipUsers();
     }
 }
