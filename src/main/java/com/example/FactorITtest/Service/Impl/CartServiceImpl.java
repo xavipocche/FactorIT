@@ -129,13 +129,17 @@ public class CartServiceImpl implements CartService {
         Optional<CartEntity> cartOptional = getCartById(cartId);
         Optional<ProductEntity> productOptional = productRepository.findById(productId);
         
-        cartOptional.get().getProduct().add(productOptional.get());
+        if(productOptional.isPresent()) {
+            cartOptional.get().getProduct().add(productOptional.get());
+        } else {
+            throw new ProductException("No se encontró el producto solicitado para añadirlo al carrito");
+        }
         
         return cartRepository.save(cartOptional.get());
     }
     
     @Override
-    public CartEntity deleteProduct(Long cartId, Long productId) throws CartException {
+    public CartEntity deleteProduct(Long cartId, Long productId) throws CartException, ProductException {
         Optional<CartEntity> cartOptional = getCartById(cartId);
         Optional<ProductEntity> productOptional = productRepository.findById(productId);
         
@@ -149,7 +153,7 @@ public class CartServiceImpl implements CartService {
                 throw new CartException("El carrito no contiene el producto solicitado para eliminar");
             }
         } else {
-            throw new CartException("No se encontró el producto para eliminarlo en el carrito");
+            throw new ProductException("No se encontró el producto para eliminarlo en el carrito");
         }        
     }
 
@@ -218,8 +222,7 @@ public class CartServiceImpl implements CartService {
         }
     }
     
-    private void validateUserVip(CartStatusResponse cartStatusResponse) throws UserException {
-        System.out.println("TOTAL GASTADO EN EL MES: " + userService.getTotalSpendInActualMonth(cartStatusResponse.getCartEntity().getUser().getId()));
+    public void validateUserVip(CartStatusResponse cartStatusResponse) throws UserException {
         if(!cartStatusResponse.getCartEntity().getType().equalsIgnoreCase(IConstants.PROMOCIONAL_POR_FECHA_ESPECIAL)) {
             if(userService.getTotalSpendInActualMonth(cartStatusResponse.getCartEntity().getUser().getId()).compareTo(new BigDecimal("10000")) != -1) {
                 cartStatusResponse.getCartEntity().setType(IConstants.VIP);
