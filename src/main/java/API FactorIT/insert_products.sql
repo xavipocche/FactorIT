@@ -1,0 +1,17 @@
+INSERT INTO product (name, price, description) VALUES('Disco duro SATA3 1TB', 86.99, null);
+INSERT INTO product (name, price, description) VALUES('Disco duro SATA3 1TB', 86.99, null);
+INSERT INTO product (name, price, description) VALUES('Disco SSD 1 TB', 150.99, null);
+INSERT INTO product (name, price, description) VALUES('GeForce GTX 1050Ti', 185, null);
+INSERT INTO product (name, price, description) VALUES('GeForce GTX 1080 Xtreme', 755, null);
+INSERT INTO product (name, price, description) VALUES('Monitor 24 LED Full HD', 202, null);
+INSERT INTO product (name, price, description) VALUES('Monitor 27 LED Full HD', 245.99, null);
+INSERT INTO product (name, price, description) VALUES('Portátil Yoga 520', 559, null);
+INSERT INTO product (name, price, description) VALUES('Portátil Ideapd 320', 444, null);
+INSERT INTO product (name, price, description) VALUES('Impresora HP Deskjet 3720', 59.99, null);
+INSERT INTO product (name, price, description) VALUES('Monitor 30 LCD HD', 549.99, null);
+INSERT INTO product (name, price, description) VALUES('Auriculares inhalambricos', 520, null);
+INSERT INTO product (name, price, description) VALUES('Consola de Videojuegos', 3499.99, null);
+INSERT INTO product (name, price, description) VALUES('RTX 3090 TI', 7499.99, null);
+INSERT INTO product (name, price, description) VALUES('Lampara de Neon', 749, null);
+INSERT INTO product (name, price, description) VALUES('Amplificador de señal', 289.99, null);
+INSERT INTO product (name, price, description) VALUES('Reloj antiguo', 360, null);
