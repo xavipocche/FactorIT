@@ -111,7 +111,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BigDecimal getTotalSpendInActualMonth(Long id) {
-        return userRepository.getTotalSpendInActualMonth(id);
+        BigDecimal totalAmountSpent = userRepository.getTotalSpendInActualMonth(id);
+        
+        if(totalAmountSpent != null){
+            return totalAmountSpent;
+        } else {
+            return new BigDecimal("0");
+        }
     }
     
     @Override
