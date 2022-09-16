@@ -1,9 +1,17 @@
 package com.example.FactorITtest.Controller;
 
 import com.example.FactorITtest.DTO.Request.UserRequest;
+import com.example.FactorITtest.DTO.Response.AddBalanceResponse;
+import com.example.FactorITtest.DTO.Response.UsersResponse;
+import com.example.FactorITtest.Entities.UserEntity;
 import com.example.FactorITtest.Exceptions.UserException;
 import com.example.FactorITtest.Exceptions.Utils.WebUtils;
 import com.example.FactorITtest.Service.Interface.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +35,14 @@ public class UserController {
     @Autowired
     UserService userService;
     
+    @Operation(summary = "Saves a user")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Save success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = UserEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "Some of the request params were null or empty", 
+            content = @Content)
+    })
     @PostMapping("/save")
     public ResponseEntity saveUser(@RequestBody UserRequest userRequest) {
         try {
@@ -36,6 +52,12 @@ public class UserController {
         }
     }
     
+    @Operation(summary = "Gets all users")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Get all users success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = UsersResponse.class)) })
+    })    
     @GetMapping("/getAll")
     public ResponseEntity getAllUsers() {
         try {
@@ -44,7 +66,15 @@ public class UserController {
             return WebUtils.generateResponseEntityFromException("ERROR-USER-02", e);
         }
     }
-    
+
+    @Operation(summary = "Gets user by ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Get user by ID success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = UserEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "User not found", 
+            content = @Content)
+    })    
     @GetMapping("/find/{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
@@ -54,6 +84,13 @@ public class UserController {
         }
     }
     
+    @Operation(summary = "Deletes a user bi ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "User deleted succesfully", 
+            content = { @Content(mediaType = "application/json") }),
+        @ApiResponse(responseCode = "422", description = "User not found", 
+            content = @Content)
+    })      
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteUserById(@PathVariable("id") Long id) {
         try {
@@ -68,6 +105,14 @@ public class UserController {
         }
     }
     
+    @Operation(summary = "Adds balance to a user")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Balance added successfully", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = AddBalanceResponse.class)) }),
+        @ApiResponse(responseCode = "422", description = "User not found", 
+            content = @Content)
+    })       
     @PostMapping("/addBalance/{id}")
     public ResponseEntity addBalance(@PathVariable("id") Long userId, 
             @RequestParam BigDecimal balance) {

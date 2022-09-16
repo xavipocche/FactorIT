@@ -1,9 +1,16 @@
 package com.example.FactorITtest.Controller;
 
 import com.example.FactorITtest.DTO.Request.ProductRequest;
+import com.example.FactorITtest.DTO.Response.ProductsResponse;
+import com.example.FactorITtest.Entities.ProductEntity;
 import com.example.FactorITtest.Exceptions.ProductException;
 import com.example.FactorITtest.Exceptions.Utils.WebUtils;
 import com.example.FactorITtest.Service.Interface.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +32,14 @@ public class ProductController {
     @Autowired
     ProductService productService;
     
+    @Operation(summary = "Saves a product")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Product saved successfully", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "Some of the request params were null or empty", 
+            content = @Content)
+    })         
     @PostMapping("/save")
     public ResponseEntity saveProduct(@RequestBody ProductRequest productRequest) {
         try {
@@ -34,6 +49,12 @@ public class ProductController {
         }
     }    
     
+    @Operation(summary = "Gets all products")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Get all products success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductsResponse.class)) }),
+    })     
     @GetMapping("/getAll")
     public ResponseEntity getAllProducts() {
         try {
@@ -43,6 +64,14 @@ public class ProductController {
         }        
     }
     
+    @Operation(summary = "Gets product by ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Get product by ID success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = ProductEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "Product not found", 
+            content = @Content)
+    })      
     @GetMapping("/find/{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
@@ -52,6 +81,13 @@ public class ProductController {
         }
     }
 
+    @Operation(summary = "Deletes product by ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Product deleted successfully", 
+            content = { @Content(mediaType = "application/json") }),
+        @ApiResponse(responseCode = "422", description = "Product not found", 
+            content = @Content)
+    })     
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteProductById(@PathVariable("id") Long id) {
         try {

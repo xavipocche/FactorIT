@@ -1,9 +1,18 @@
 package com.example.FactorITtest.Controller;
 
 import com.example.FactorITtest.DTO.Request.CartRequest;
+import com.example.FactorITtest.DTO.Response.CartStatusResponse;
+import com.example.FactorITtest.DTO.Response.CartsResponse;
+import com.example.FactorITtest.DTO.Response.CheckoutResponse;
+import com.example.FactorITtest.Entities.CartEntity;
 import com.example.FactorITtest.Exceptions.CartException;
 import com.example.FactorITtest.Exceptions.Utils.WebUtils;
 import com.example.FactorITtest.Service.Interface.CartService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +35,14 @@ public class CartController {
     @Autowired
     CartService cartService;
     
+    @Operation(summary = "Saves a cart")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Cart saved successfully", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CartEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "User not found", 
+            content = @Content)
+    })     
     @PostMapping("/save")
     public ResponseEntity saveCart(@RequestBody CartRequest cartRequest) {
         try {
@@ -34,7 +51,13 @@ public class CartController {
             return WebUtils.generateResponseEntityFromException("ERROR-CART-01", e);
         }
     }
-    
+
+    @Operation(summary = "Gets all the carts")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Get all carts success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CartsResponse.class)) }),
+    })         
     @GetMapping("/getAll")
     public ResponseEntity getAllCarts() {
         try {
@@ -44,6 +67,14 @@ public class CartController {
         }
     }
     
+    @Operation(summary = "Gets cart by ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Get cart by ID success", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CartEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "Cart not found", 
+            content = @Content)
+    })     
     @GetMapping("/find/{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
@@ -53,6 +84,13 @@ public class CartController {
         }
     }
     
+    @Operation(summary = "Deletes cart by ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Cart deleted succesfully", 
+            content = { @Content(mediaType = "application/json") }),
+        @ApiResponse(responseCode = "422", description = "Cart not found", 
+            content = @Content)
+    })      
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteCartById(@PathVariable("id") Long id) {
         try {
@@ -66,7 +104,15 @@ public class CartController {
             return WebUtils.generateResponseEntityFromException("ERROR-CART-05", e);
         }
     }
-    
+
+    @Operation(summary = "Adds product to cart")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Product added succesfuly", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CartEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "Cart not found, The product is already assigned to another cart", 
+            content = @Content)
+    })     
     @PostMapping("/addProduct/{id}")
     public ResponseEntity addProduct(@PathVariable("id") Long cartId,
             @RequestParam Long productId) {
@@ -77,6 +123,14 @@ public class CartController {
         }
     }
     
+    @Operation(summary = "Deletes product from cart")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Product deleted from cart succesfuly", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CartEntity.class)) }),
+        @ApiResponse(responseCode = "422", description = "Cart not found, You cannot delete a product that is assigned in a cart", 
+            content = @Content)
+    })      
     @PostMapping("/deleteProduct/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") Long cartId,
             @RequestParam Long productId) {
@@ -87,6 +141,14 @@ public class CartController {
         }
     }
     
+    @Operation(summary = "Shows info about the cart, list of products and total to pay")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Shows info successfully", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CartStatusResponse.class)) }),
+        @ApiResponse(responseCode = "422", description = "Cart not found", 
+            content = @Content)
+    })      
     @GetMapping("/getStatusCart/{id}")
     public ResponseEntity getStatusCart(@PathVariable("id") Long id) {
         try {
@@ -96,6 +158,14 @@ public class CartController {
         }
     }
     
+    @Operation(summary = "Pay the cart, comparing the user´s balance with the total to pay from the cart")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Cart paid successfully and register the sale y the table sales", 
+            content = { @Content(mediaType = "application/json", 
+                schema = @Schema(implementation = CheckoutResponse.class)) }),
+        @ApiResponse(responseCode = "422", description = "Cart not found", 
+            content = @Content)
+    })     
     @PostMapping("/pay/{id}")
     public ResponseEntity payCart(@PathVariable("id") Long id) {
         try {
