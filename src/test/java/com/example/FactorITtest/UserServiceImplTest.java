@@ -75,7 +75,6 @@ public class UserServiceImplTest {
         assertEquals(userExpected.getLastname(), userExpected.getLastname());
         assertEquals(userActual.getEmail(), userActual.getEmail());
         assertEquals(userExpected.getBalance(), userActual.getBalance());
-        
     }
     
     @Test
