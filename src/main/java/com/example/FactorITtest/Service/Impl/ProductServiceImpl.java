@@ -69,7 +69,11 @@ public class ProductServiceImpl implements ProductService {
         Optional<ProductEntity> productOptional = getProductById(id);
             
         if(productOptional.isPresent()) {
-            productRepository.delete(productOptional.get());
+            try {
+                productRepository.delete(productOptional.get());
+            } catch (Exception e) {
+                throw new ProductException(e.getMessage());
+            }
             return true;
         } else {
             throw new ProductException("No se encontró el producto solicitado para su eliminación");

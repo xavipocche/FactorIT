@@ -72,7 +72,11 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> userOptional = getUserById(id);
             
         if(userOptional.isPresent()) {
-            userRepository.delete(userOptional.get());
+            try {
+                userRepository.delete(userOptional.get());
+            } catch (Exception e) {
+                throw new UserException(e.getMessage());
+            }
             return true;
         } else {
             throw new UserException("No se encontró el usuario solicitado para su eliminación");

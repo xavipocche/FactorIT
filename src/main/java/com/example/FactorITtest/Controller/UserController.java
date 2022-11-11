@@ -84,7 +84,7 @@ public class UserController {
         }
     }
     
-    @Operation(summary = "Deletes a user bi ID")
+    @Operation(summary = "Deletes a user by ID")
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "User deleted succesfully", 
             content = { @Content(mediaType = "application/json") }),
