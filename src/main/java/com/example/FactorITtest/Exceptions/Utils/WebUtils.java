@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
  */
 public class WebUtils {
     
+    private static final String ERROR_CODE = "Error-Code";
+    private static final String ERROR_MESSAGE = "Error-Message";
+    
     public static ResponseEntity generateResponseEntityFromException(String code, Exception e) {
         String error = null;
         if(e.getMessage().equals(ErrorTypesConstants.PRODUCT_ADDED_ERROR)) {
@@ -21,8 +24,8 @@ public class WebUtils {
         }
         final String errorMessage = error;
         return ResponseEntity.unprocessableEntity().headers(headers -> {
-                headers.add("ERROR_CODE", code);
-                headers.add("ERROR_MESSAGE", errorMessage);
+                headers.add(ERROR_CODE, code);
+                headers.add(ERROR_MESSAGE, errorMessage);
             }).body(error);
     }    
 }
