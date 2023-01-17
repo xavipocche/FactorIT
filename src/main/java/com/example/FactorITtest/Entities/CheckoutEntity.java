@@ -38,8 +38,8 @@ public class CheckoutEntity {
     @Column(name = "total")
     private BigDecimal total;
     
-    @Column(name = "customerFullname")
-    private String customerFullname;
+    @Column(name = "customerFullName")
+    private String customerFullName;
     
     @Column(name = "customerId")
     private Long customerId;

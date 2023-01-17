@@ -57,7 +57,7 @@ public class CartServiceImplTest {
         Mockito.when(cartRepository.findAll()).thenReturn(cartsResponseExpected.getListCarts());
         Mockito.when(cartRepository.countCarts()).thenReturn(cartsResponseExpected.getTotalCarts());
         
-        CartsResponse cartsResponseActual =  cartServiceImpl.getAllCarts();
+        CartsResponse cartsResponseActual = cartServiceImpl.getAllCarts();
         
         assertNotNull(cartsResponseActual);
         assertEquals(cartsResponseExpected.getListCarts(), cartsResponseActual.getListCarts());
