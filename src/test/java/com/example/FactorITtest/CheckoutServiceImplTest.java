@@ -42,7 +42,7 @@ public class CheckoutServiceImplTest {
         List<CheckoutEntity> checkoutListActual = checkoutServiceImpl.getAllCheckouts();
         
         assertNotNull(checkoutListActual);
-        assertEquals(checkoutEntity.getCustomerFullname(), checkoutEntity.getCustomerFullname());
+        assertEquals(checkoutEntity.getCustomerFullName(), checkoutEntity.getCustomerFullName());
         assertEquals(checkoutEntity.getCustomerId(), checkoutEntity.getCustomerId());
         assertEquals(checkoutEntity.getDetail(), checkoutEntity.getDetail());
         assertEquals(checkoutEntity.getCustomerId(), checkoutEntity.getCustomerId());
@@ -53,7 +53,7 @@ public class CheckoutServiceImplTest {
     private CheckoutEntity generateCheckout() {
         CheckoutEntity checkoutEntity = 
                 CheckoutEntity.builder()
-                    .customerFullname("cliente nuevo")
+                    .customerFullName("cliente nuevo")
                     .detail("details")
                     .customerId(1L)
                     .status(IConstants.SUCCESS_SALE)
