@@ -96,21 +96,16 @@ public class CartServiceImpl implements CartService {
     public Boolean deleteCartById(Long id) throws CartException {
         Optional<CartEntity> cartOptional = getCartById(id);
         
-        if(cartOptional.isPresent()) {
-            cartRepository.delete(cartOptional.get());
-            return true;
-        } else {
-            throw new CartException("No se encontró el carrito solicitado para su eliminación");
-        }
+        cartRepository.delete(cartOptional.get());
+        return true;
     }
 
     @Override
     public CartStatusResponse getCartStatus(Long id) throws CartException {
         Optional<CartEntity> cartOptional = cartRepository.findById(id);
-        BigDecimal totalToPay = cartRepository.sumProductPrice(id);
-  
+        
         if(cartOptional.isPresent()) {
-            
+            BigDecimal totalToPay = cartRepository.sumProductPrice(id);
             CartStatusResponse cartStatusResponse = 
                     CartStatusResponse.builder()
                         .cartEntity(cartOptional.get())
