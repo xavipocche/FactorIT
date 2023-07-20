@@ -3,7 +3,6 @@ package com.example.FactorITtest;
 import com.example.FactorITtest.Constants.IConstants;
 import com.example.FactorITtest.DTO.Response.CartStatusResponse;
 import com.example.FactorITtest.DTO.Response.CartsResponse;
-import com.example.FactorITtest.DTO.Response.CheckoutResponse;
 import com.example.FactorITtest.Entities.CartEntity;
 import com.example.FactorITtest.Entities.ProductEntity;
 import com.example.FactorITtest.Entities.UserEntity;
