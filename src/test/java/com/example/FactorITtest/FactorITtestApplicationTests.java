@@ -9,5 +9,4 @@ class FactorITtestApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

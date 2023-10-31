@@ -8,19 +8,9 @@ import com.example.FactorITtest.Entities.ProductEntity;
 import com.example.FactorITtest.Entities.UserEntity;
 import com.example.FactorITtest.Exceptions.CartException;
 import com.example.FactorITtest.Exceptions.ProductException;
-import com.example.FactorITtest.Exceptions.UserException;
 import com.example.FactorITtest.Repository.CartRepository;
 import com.example.FactorITtest.Repository.ProductRepository;
-import com.example.FactorITtest.Repository.UserRepository;
 import com.example.FactorITtest.Service.Impl.CartServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +18,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  *
@@ -45,9 +42,6 @@ public class CartServiceImplTest {
     @Mock 
     private ProductRepository productRepository;
     
-    @Mock 
-    private UserRepository userRepository;    
-
     @Test
     @DisplayName("Test get all carts OK")
     void getAllCartsOk() {
@@ -82,7 +76,7 @@ public class CartServiceImplTest {
     
     @Test
     @DisplayName("Test cart not found")
-    void getCartNotFound() throws CartException {
+    void getCartNotFound() {
         CartEntity cartExpected = generateCart();
         
         Mockito.when(cartRepository.findById(cartExpected.getId())).thenReturn(Optional.empty());
@@ -109,7 +103,7 @@ public class CartServiceImplTest {
     
     @Test
     @DisplayName("Test delete fail")
-    void deleteCartFail() throws CartException {
+    void deleteCartFail() {
         CartEntity cartExpected = generateCart();
         
         Mockito.when(cartRepository.findById(cartExpected.getId())).thenReturn(Optional.empty());
@@ -140,7 +134,7 @@ public class CartServiceImplTest {
     
     @Test
     @DisplayName("Test get cart Status Error")
-    void getCartStatusFail() throws CartException {
+    void getCartStatusFail() {
         CartEntity cartExpected = generateCart();
 
         Mockito.when(cartRepository.findById(cartExpected.getId())).thenReturn(Optional.empty());
@@ -152,7 +146,7 @@ public class CartServiceImplTest {
 
     @Test
     @DisplayName("Test add product cart not found")
-    void addProductCartNotFound() throws CartException, ProductException {
+    void addProductCartNotFound() {
         CartEntity cartExpected = generateCart();
         
         Mockito.when(cartRepository.findById(cartExpected.getId())).thenReturn(Optional.empty());
@@ -164,7 +158,7 @@ public class CartServiceImplTest {
     
     @Test
     @DisplayName("Test add product not found")
-    void addProductNotFound() throws CartException, ProductException {
+    void addProductNotFound() {
         CartEntity cartExpected = generateCart();
         Optional<CartEntity> cartOptional = Optional.of(cartExpected);
         
@@ -190,7 +184,7 @@ public class CartServiceImplTest {
     
     @Test
     @DisplayName("Test delete product not found")
-    void deleteProductNotFound() throws CartException, ProductException {
+    void deleteProductNotFound() {
         CartEntity cartExpected = generateCart();
         Optional<CartEntity> cartOptional = Optional.of(cartExpected);
         
@@ -204,7 +198,7 @@ public class CartServiceImplTest {
 
     @Test
     @DisplayName("Test delete product from cart not found")
-    void deleteProductFromCartNotFound() throws CartException, ProductException {
+    void deleteProductFromCartNotFound() {
         CartEntity cartExpected = generateCart();
         Optional<CartEntity> cartOptional = Optional.of(cartExpected);
         
@@ -227,7 +221,7 @@ public class CartServiceImplTest {
 
     @Test
     @DisplayName("Test pay cart OK")
-    void payCartOk() throws CartException, UserException, JsonProcessingException {
+    void payCartOk() {
         CartEntity cartExpected = generateCart();
         Optional<CartEntity> cartOptional = Optional.of(cartExpected);
         cartExpected.getProduct().removeAll(cartExpected.getProduct());

@@ -110,7 +110,7 @@ public class CartController {
         @ApiResponse(responseCode = "200", description = "Product added succesfuly", 
             content = { @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = CartEntity.class)) }),
-        @ApiResponse(responseCode = "422", description = "Cart not found, The product is already assigned to another cart", 
+        @ApiResponse(responseCode = "422", description = "Cart not found, Product not found", 
             content = @Content)
     })     
     @PostMapping("/addProduct/{id}")

@@ -24,6 +24,4 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     
     @Query(value = "SELECT s.id, s.name, s.lastname, s.email, s.balance FROM (SELECT u.id, u.name, u.lastname ,u.email, u.balance, SUM(s.total) AS 'total_spent' FROM sales s INNER JOIN user u ON u.id = s.customer_id WHERE s.status = 'SUCCESS' GROUP BY s.customer_id) AS s WHERE s.total_spent > 10000", nativeQuery = true)
     List<UserEntity> getVipUsers();
-    
-    
 }

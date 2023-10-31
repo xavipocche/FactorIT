@@ -15,9 +15,7 @@ public class WebUtils {
     
     public static ResponseEntity generateResponseEntityFromException(String code, Exception e) {
         String error;
-        if(e.getMessage().equals(ErrorTypesConstants.PRODUCT_ADDED_ERROR)) {
-            error = "El producto ya se encuentra agregado en un carrito";
-        } else if(e.getMessage().equals(ErrorTypesConstants.DELETE_PRODUCT_ADDED_ERROR) && e instanceof ProductException) {
+        if(e.getMessage().equals(ErrorTypesConstants.DELETE_PRODUCT_ADDED_ERROR) && e instanceof ProductException) {
             error = "No puede eliminar un producto que está dentro en un carrito";
         } else if(e.getMessage().equals(ErrorTypesConstants.DELETE_PRODUCT_ADDED_ERROR) && e instanceof UserException) {
             error = "No puede eliminar un usuario que tiene un carrito asignado";
